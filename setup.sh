@@ -25,7 +25,7 @@ samba-tool domain provision --realm HSSERVICE.LAN \
                                    --domain HSSERVICE \
                                    --server-role dc \
                                    --dns-backend BIND9_DLZ \
-                                   --adminpass pddlak2 \
+                                   --adminpass CambiaLaPassword123 \
                                    --use-rfc2307 \
                                    --option="interfaces=lo enX0" \
                                    --option="bind interfaces only=yes"
