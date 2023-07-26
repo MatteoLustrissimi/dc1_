@@ -7,6 +7,7 @@ grep -q bullseye /etc/os-release && {
   apt full-upgrade -y
   apt autoremove --purge
   sed 's/eth/enX/g' -i /etc/network/interfaces # only on xcp-ng
+  reboot
 }
 
 # VARIABLES:
