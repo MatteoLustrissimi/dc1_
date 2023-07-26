@@ -7,6 +7,7 @@ grep -q bullseye /etc/os-release && {
   DEBIAN_FRONTEND=noninteractive apt full-upgrade -y
   apt autoremove --purge -y
   sed 's/eth/enX/g' -i /etc/network/interfaces # only on xcp-ng
+  hostnamectl hostname dc1.hsservice.lan
   reboot
 }
 
