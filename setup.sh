@@ -33,3 +33,34 @@ samba-tool domain provision --realm HSSERVICE.LAN \
 
 cp /var/lib/samba/private/krb5.conf /etc/krb5.conf
 ln -s /var/lib/samba/private/secrets.keytab /etc/krb5.keytab
+
+mkdir /var/lib/samba/ntp_signd && hgrp _chrony /var/lib/samba/ntp_signd && chmod 750 /var/lib/samba/ntp_signd
+sed -i -e "/\# Use Debian vendor zone./,+2d" /etc/chrony/chrony.con
+
+cat << EOF | tee /etc/chrony/sources.d/debian-pool.sources
+pool 0.debian.pool.ntp.org iburst
+pool 1.debian.pool.ntp.org iburst
+pool 2.debian.pool.ntp.org iburst
+pool 3.debian.pool.ntp.org iburst
+EOF
+
+cat << EOF | tee /etc/chrony/conf.d/server.conf
+bindaddress 192.168.223.5
+allow 192.168.223.1/24
+ntpsigndsocket  /var/lib/samba/ntp_signd
+EOF
+
+cat << EOF | tee /etc/chrony/conf.d/cmd.conf
+bindcmdaddress /var/run/chrony/chronyd.sock
+cmdport 0
+EOF
+
+systemctl enable --now  chrony
+
+grep -q 'include "/var/lib/samba/bind-dns/named.conf";' /etc/bind/named.conf || echo 'include "/var/lib/samba/bind-dns/named.conf";' >> /etc/bind/named.conf
+grep -q 'tkey-gssapi-keytab' /etc/bind/named.conf.options  || sed  '/listen-on-v6 {/a\ \ \ \ \ \ \ \ tkey-gssapi-keytab "/var/lib/samba/bind-dns/dns.keytab";' -i /etc/bind/named.conf.options 
+
+systemctl enable --now named
+systemctl unmask samba-ad-dc.service
+systemctl enable --now samba-ad-dc.service
+
