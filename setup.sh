@@ -65,3 +65,10 @@ systemctl enable --now named
 systemctl unmask samba-ad-dc.service
 systemctl enable --now samba-ad-dc.service
 
+apt install isc-dhcp-server -y
+samba-tool user create dhcpduser --description="Unprivileged user for TSIG-GSSAPI DNS updates via ISC DHCP server" --random-password
+samba-tool user setexpiry dhcpduser --noexpiry
+samba-tool group addmembers DnsAdmins dhcpduser
+samba-tool domain exportkeytab --principal=dhcpduser@DC1.HSSERVICE.LAN /etc/dhcpduser.keytab
+chown root:root /etc/dhcpduser.keytab
+chmod 400 /etc/dhcpduser.keytab
