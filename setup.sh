@@ -72,3 +72,7 @@ samba-tool group addmembers DnsAdmins dhcpduser
 samba-tool domain exportkeytab --principal=dhcpduser@DC1.HSSERVICE.LAN /etc/dhcpduser.keytab
 chown root:root /etc/dhcpduser.keytab
 chmod 400 /etc/dhcpduser.keytab
+
+wget https://github.com/MatteoLustrissimi/dc1_/raw/main/dhcp-dyndns.sh -O /usr/local/bin/dhcp-dyndns.sh && chmod 775 /usr/local/bin/dhcp-dyndns.sh 
+cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.orig
+grep -q omapi /etc/dhcp/dhcpd.conf || echo -e "\nomapi-port 7911;\nomapi-key omapi_key;\n $(tsig-keygen -a hmac-md5 omapi_key)" >> /etc/dhcp/dhcpd.conf
