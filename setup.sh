@@ -34,7 +34,7 @@ samba-tool domain provision --realm HSSERVICE.LAN \
 cp /var/lib/samba/private/krb5.conf /etc/krb5.conf
 ln -s /var/lib/samba/private/secrets.keytab /etc/krb5.keytab
 
-mkdir /var/lib/samba/ntp_signd && hgrp _chrony /var/lib/samba/ntp_signd && chmod 750 /var/lib/samba/ntp_signd
+mkdir /var/lib/samba/ntp_signd && chgrp _chrony /var/lib/samba/ntp_signd && chmod 750 /var/lib/samba/ntp_signd
 sed -i -e "/\# Use Debian vendor zone./,+2d" /etc/chrony/chrony.con
 
 cat << EOF ->/etc/chrony/sources.d/debian-pool.sources
