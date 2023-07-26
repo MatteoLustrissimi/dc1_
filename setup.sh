@@ -37,20 +37,20 @@ ln -s /var/lib/samba/private/secrets.keytab /etc/krb5.keytab
 mkdir /var/lib/samba/ntp_signd && hgrp _chrony /var/lib/samba/ntp_signd && chmod 750 /var/lib/samba/ntp_signd
 sed -i -e "/\# Use Debian vendor zone./,+2d" /etc/chrony/chrony.con
 
-cat << EOF | tee /etc/chrony/sources.d/debian-pool.sources
+cat << EOF ->/etc/chrony/sources.d/debian-pool.sources
 pool 0.debian.pool.ntp.org iburst
 pool 1.debian.pool.ntp.org iburst
 pool 2.debian.pool.ntp.org iburst
 pool 3.debian.pool.ntp.org iburst
 EOF
 
-cat << EOF | tee /etc/chrony/conf.d/server.conf
+cat << EOF ->/etc/chrony/conf.d/server.conf
 bindaddress 192.168.223.5
 allow 192.168.223.1/24
 ntpsigndsocket  /var/lib/samba/ntp_signd
 EOF
 
-cat << EOF | tee /etc/chrony/conf.d/cmd.conf
+cat << EOF ->/etc/chrony/conf.d/cmd.conf
 bindcmdaddress /var/run/chrony/chronyd.sock
 cmdport 0
 EOF
