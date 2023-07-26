@@ -5,7 +5,7 @@ grep -q bullseye /etc/os-release && {
   sed 's/bullseye/bookworm/g' -i /etc/apt/sources.list
   apt update && DEBIAN_FRONTEND=noninteractive apt upgrade --without-new-pkgs -y
   DEBIAN_FRONTEND=noninteractive apt full-upgrade -y
-  apt autoremove --purge
+  apt autoremove --purge -y
   sed 's/eth/enX/g' -i /etc/network/interfaces # only on xcp-ng
   reboot
 }
