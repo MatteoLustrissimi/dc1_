@@ -26,7 +26,7 @@ grep -q bullseye /etc/os-release && {
 
 # DC SETUP:
 apt install -y chrony && systemctl disable --now chrony
-apt install -y bind9 bind9utils && bind9-doc systemctl disable --now bind
+apt install -y bind9 bind9utils bind9-doc && systemctl disable --now bind
 DEBIAN_FRONTEND=noninteractive apt-get install -y samba smbclient winbind krb5-user krb5-config libpam-krb5 libpam-winbind libnss-winbind acl net-tools
 systemctl disable --now samba-ad-dc.service smbd.service nmbd.service winbind.service
 unlink /etc/samba/smb.conf
