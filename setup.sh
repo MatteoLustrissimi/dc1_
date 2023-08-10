@@ -8,7 +8,6 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 # echo an error message before exiting
 trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 
-debian_check
 grep -q bullseye /etc/os-release && {
   apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y
   apt --purge autoremove -y
